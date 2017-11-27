@@ -1,0 +1,276 @@
+% Style for close-to-official ESE style presentations
+% Allows for 4:3 or 16:9 aspectratio
+% Dennis Fok (May 2015, last updated Nov 2017)
+
+\usepackage{pgf}
+\usepackage{soul}
+\usepackage{ulem}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{bm}
+\usepackage{multirow}
+\usepackage{dcolumn}
+\usepackage{ifthen}
+
+% New commands
+\newcolumntype{d}{D{.}{.}{-1}}
+\newcommand{\ctext}[1]{\multicolumn{1}{c}{#1}}
+\newcommand{\tab}{\phantom{tab}}
+\newcommand{\putat}[3]{\begin{picture}(0,0)(0,0)\put(#1,#2){#3}\end{picture}} 
+\newcommand{\skippause}{\bigskip\pause}
+\newcommand{\ra}{$\rightarrow$~}
+
+%%%%%%%%%%
+% Additional mathematics commands 
+%%%%%%%%%%
+\newcommand{\Var}{\text{Var}}
+\newcommand{\var}{\Var}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\cov}{\Cov}
+\newcommand{\estvar}{\widehat{\Var}}
+\newcommand{\Ra}{$\Rightarrow$}
+\newcommand{\E}{\text{E}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\plim}{\text{plim}\,}
+\newcommand{\dsum}{\sum_{i=1}^n}
+\newcommand{\invxx}{(X'X)^{-1}}
+\newcommand{\rank}{\text{rank}}
+\newcommand{\Hn}{$H_0$ }
+\newcommand{\Ha}{$H_1$ }
+\newcommand{\SSR}{\text{SSR}}
+\newcommand{\SST}{\text{SST}}
+\newcommand{\SSE}{\text{SSE}}
+\newcommand{\thML}{\hat\theta_\text{ML}}
+\newcommand{\partialder}[2]{\frac{\partial #1}{\partial #2}}
+
+% Set some beamer options
+\usetheme{Boadilla} 
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{frametitle}{fg=EURGreen,bg=EURYellow}
+\setbeamercolor{block title}{use=structure,fg=EURGreen,bg=EURYellow}
+\setbeamercolor{block body}{use=structure,fg=black,bg=white!20!white}
+
+
+% If-then statement based on paper size 
+% eg. \ifratio{169}{true}{false} or \ifratio{43}{true}{false}
+\makeatletter
+\newcommand\ifratio[3]{%
+	\ifnum#1=169%
+		\ifdim\beamer@paperwidth=16.00cm\relax%
+			\ifdim\beamer@paperheight=9.00cm\relax%
+				#2%
+			\else%
+				#3%
+			\fi%
+		\else%
+			#3%
+		\fi%
+	\else%
+		\ifnum#1=43%
+		\ifdim\beamer@paperwidth=12.80cm\relax%
+			\ifdim\beamer@paperheight=9.60cm\relax%
+				#2%
+			\else%
+				#3%
+			\fi%
+			\else%
+				#3%
+			\fi%
+		\fi%
+	\fi%
+}
+
+%Redefine blue if necessary
+\@ifundefined{blue}
+{\newcommand{\blue}[1]{{\color{blue}#1}}}%
+{\renewcommand{\blue}[1]{{\color{blue}#1}}}%
+\makeatother
+
+%If-then for article vs presentation
+\newcommand{\ifArticle}[2]{%
+\only<beamer|handout>{#2}%
+\only<article>{#1}%
+}
+
+% Define official EUR/ESE colors
+\definecolor{EURGreen}{RGB}{0,35,40}
+\definecolor{EURYellow}{RGB}{255,215,0}
+
+\newcommand{\dropframenumbers}{\setbeamertemplate{footline}{}}
+\newcommand{\breakframe}[1]{
+	\begin{frame}\thispagestyle{empty}
+		\begin{center}
+			\Huge{#1}
+		\end{center}
+		\addtocounter{framenumber}{-1}
+	\end{frame}
+}
+
+% New environment
+\newenvironment{wideitemize}{\itemize\addtolength{\itemsep}{15pt}}{\enditemize}
+\newcommand{\noyellowtitle}{\setbeamercolor{frametitle}{fg=black,bg=white}}
+
+
+\mode<beamer|handout>{
+\newcommand{\slidenewline}{\newline}
+}
+
+\mode<article>{
+\newcommand{\slidenewline}{}
+}
+
+\mode<beamer>{
+\setbeamertemplate{footline}
+{\leavevmode%
+	\ifratio{169}{%
+		\putat{410}{2}{  
+			Slide \insertframenumber{} of \inserttotalframenumber
+		}
+	}%
+	{%
+		\putat{318}{2}{  
+			Slide \insertframenumber{} of \inserttotalframenumber
+		}
+	}%
+}
+}
+
+% Set footline
+\mode<handout>
+{
+\setbeamertemplate{footline}
+{\leavevmode%
+\ifratio{169}{%
+\putat{388}{2}{  
+	Slide \insertframenumber{} of \inserttotalframenumber
+}
+}%
+{%
+\putat{318}{2}{  
+Slide \insertframenumber{} of \inserttotalframenumber
+}
+}%
+}
+}
+
+\newcommand{\addframenum}{
+	\mode<beamer>{\setbeamertemplate{footline}{\leavevmode%
+			\putat{318}{2}{  
+				\insertframenumber{} / \inserttotalframenumber
+			}
+		}
+	}
+}
+
+% Underlining and highlighting
+\makeatletter
+\newcommand\SoulColor{%
+  \let\set@color\beamerorig@set@color
+  \let\reset@color\beamerorig@reset@color}  
+\makeatother
+\newcommand\reduline{\bgroup\markoverwith
+{\textcolor{red}{\rule[-0.5ex]{2pt}{1pt}}}\ULon}
+
+\renewcommand<>{\hl}[1]{\only#2{\SoulColor\beameroriginal{\hl}}{#1}}
+\renewcommand<>{\ul}[1]{\only#2{\reduline}{#1}}
+\newcommand<>{\boxhl}[1]{\only#2{\color{red}\setlength{\fboxrule}{1pt}\fbox}{\normalcolor#1}\normalcolor}
+
+\sethlcolor{EURYellow}%{yellow}
+
+% Define some default size options for figures
+\newlength{\figwidth}
+\setlength{\figwidth}{0.85\textwidth}
+\newlength{\figheight}
+\setlength{\figheight}{0.85\textheight}
+
+% Add Erasmus signature as logo
+\pgfdeclareimage[width=3cm]{logo}{erasmus.pdf}
+\logo{\pgfputat{\pgfxy(-1.5,-.5)}{\pgfbox[center,base]{\pgfuseimage{logo}}}}  
+
+% Title page
+\renewcommand{\titlepage}
+{%
+\mode<beamer|handout>{
+\ifratio{169}{
+\usebackgroundtemplate{
+\begin{tikzpicture}%pagedim 16 x 9
+	\fill[color=EURYellow] (0,0) -- (0,-8) -- (14,-5) -- (16, 0) -- cycle;
+	\fill[color=EURGreen] (0,-8) -- (14,-5) -- (15,0) -- (16, 0) -- (16,-9) -- (0,-9) -- cycle;
+	\node[align=left,scale=1.3,anchor=west] at (0.5,-.75) {
+			{\tiny \textbf{Erasmus}}\\[.075cm]
+			{\tiny \textbf{School of}}\\[.075cm]
+			{\tiny \textbf{Economics}}
+			};
+	\node[color=white, scale=1.2, anchor=west] at (0.5,-8.5) {\tiny \textbf{Erasmus University Rotterdam}};
+	\node at (14,-8.4) {\includegraphics[width=2cm]{erasmus_white.png}};
+\end{tikzpicture}
+}}
+{
+\usebackgroundtemplate{
+	\begin{tikzpicture}%pagedim 12.9 x 9.6
+	\fill[color=EURYellow] (0,0) -- (0,-8) -- (10,-5) -- (12, 0) -- cycle;
+	\fill[color=EURGreen] (0,-8) -- (10,-5) -- (12,0) -- (12.8, 0) -- (12.8,-9.6) -- (0,-9.6) -- cycle;
+	\node[align=left,scale=1.3,anchor=west] at (0.5,-.75) {
+		{\tiny \textbf{Erasmus}}\\[.075cm]
+		{\tiny \textbf{School of}}\\[.075cm]
+		{\tiny \textbf{Economics}}
+	};
+	\node[color=white, scale=1.2, anchor=west] at (0.5,-8.75) {\tiny \textbf{Erasmus University Rotterdam}};
+	\node at (11,-8.75) {\includegraphics[width=2cm]{erasmus_white.png}};
+	\end{tikzpicture}
+}
+}
+}
+\begin{frame}[plain,t]
+\vspace{1.5cm}
+\hspace{.27cm}\begin{minipage}{.8\textwidth}
+\raggedright
+\color{EURGreen}
+\Huge \inserttitle \bigskip 
+
+\Large \insertsubtitle
+\bigskip
+
+\Large 
+\hangindent=1cm
+\hangafter=1
+\insertauthor
+\bigskip
+
+\large \insertdate
+\end{minipage}%
+\end{frame}
+\usebackgroundtemplate{}
+}
+
+
+%%% Article mode
+\newcommand{\resetcounters}{\setcounter{framenumber}{1}\setcounter{equation}{0}\setcounter{section}{0}}
+
+\mode<article>
+{
+	\setcounter{framenumber}{1}
+	\textwidth 16cm
+	\oddsidemargin 0cm
+	\evensidemargin 0cm
+	
+	% \setlength{\marginparwidth}{1.2in}
+	\reversemarginpar
+	\let\oldmarginpar\marginpar
+	\renewcommand\marginpar[1]{\-\oldmarginpar[\raggedleft\footnotesize #1]%
+		{\raggedright\footnotesize #1}}
+	\renewenvironment{frame}[2][]{\stepcounter{framenumber}\subsubsection*{#2\marginpar{Slide \arabic{framenumber}}}}{}
+	\setlength\parindent{0in}
+	
+	\setlength{\figwidth}{0.7\textwidth}
+	\setlength{\figheight}{0.3\textheight}
+
+	\newcommand{\newsubframe}{\stepcounter{framenumber}\bigskip}
+	\newcommand{\startpart}[1]{\resetcounters\setcounter{part}{#1}\addtocounter{part}{-1}}
+
+}
+
+\mode<presentation>{  
+	\newcommand{\newsubframe}{\newpage}
+}
