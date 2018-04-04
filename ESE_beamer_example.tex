@@ -12,12 +12,18 @@
 \subtitle{Sub-title}
 \author{Author}
 \date{\today}
+\footer{Erasmus School of Economics}	% Comment out for no footer
 
-%\noyellowtitle
-%\dropframenumbers
+%\noyellowtitle							% Remove yellow title bars (matches new 'official' style)
+%\dropframenumbers						% Hide frame numbers
 
 \begin{document}
-\titlepage
+%\titlepage % Use for title page without picture
+
+\titlepagePicture{\includegraphics[height=9cm,trim=3cm 2.5cm 0cm 0cm, clip=true]{erasmusPhoto.jpeg}} %for aspectratio=16x9: picture should be 16x9cm at least
+
+%\titlepagePicture{\includegraphics[height=9.6cm]{erasmusPhoto.jpeg}} %for aspectratio=4x3: picture should be 12.9x9.6cm at least)
+
 
 \begin{frame}{Example slide}
 
