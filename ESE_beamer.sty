@@ -12,7 +12,7 @@
 \usepackage{multirow}
 \usepackage{dcolumn}
 \usepackage{ifthen}
-
+\usepackage{xspace}
 %
 \makeatletter
 \def\Myfooter{}
@@ -44,8 +44,8 @@
 \newcommand{\dsum}{\sum_{i=1}^n}
 \newcommand{\invxx}{(X'X)^{-1}}
 \newcommand{\rank}{\text{rank}}
-\newcommand{\Hn}{$H_0$ }
-\newcommand{\Ha}{$H_1$ }
+\newcommand{\Hn}{$H_0$\xspace}
+\newcommand{\Ha}{$H_1$\xspace}
 \newcommand{\SSR}{\text{SSR}}
 \newcommand{\SST}{\text{SST}}
 \newcommand{\SSE}{\text{SSE}}
@@ -112,9 +112,11 @@
 
 \newcommand{\breakframe}[1]{
 	\begin{frame}\thispagestyle{empty}
+		\vfill
 		\begin{center}
 			\Huge{#1}
 		\end{center}
+		\vfill
 		\addtocounter{framenumber}{-1}
 	\end{frame}
 }
