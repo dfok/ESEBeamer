@@ -61,6 +61,20 @@
 \setbeamercolor{block title}{use=structure,fg=EURGreen,bg=EURYellow}
 \setbeamercolor{block body}{use=structure,fg=black,bg=white!20!white}
 
+
+\newcommand{\yellowItemize}{
+	\setbeamercolor{itemize item}{fg=EURYellow}
+	\setbeamercolor{itemize subitem}{fg=EURYellow}
+	\setbeamercolor{itemize subsubitem}{fg=EURYellow}
+	
+	\setbeamertemplate{itemize item}[square]
+	\setbeamertemplate{itemize subitem}[circle]
+	\setbeamertemplate{itemize subsubitem}[triangle]
+	
+	\setbeamercolor{item projected}{bg=EURYellow,fg=EURGreen}
+	\setbeamertemplate{enumerate item}[circle]
+}
+
 % If-then statement based on paper size 
 % eg. \ifratio{169}{true}{false} or \ifratio{43}{true}{false}
 \makeatletter
@@ -168,6 +182,7 @@
 	\begin{frame}[plain,t]
 	\end{frame}
 	\usebackgroundtemplate{}
+	\addtocounter{framenumber}{-1}
 }
 
 % New environment
