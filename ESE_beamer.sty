@@ -8,6 +8,7 @@
 \usepackage{xcolor}
 \usepackage{booktabs}
 \usepackage{tikz}
+\usetikzlibrary{positioning}
 \usepackage{bm}
 \usepackage{multirow}
 \usepackage{dcolumn}
@@ -22,6 +23,25 @@
 
 \makeatother
 
+\def\copyrighttext{\tiny{© \the\year\xspace Erasmus University Rotterdam, All rights reserved. No text and datamining}}
+
+\newcommand{\setcopyright}[1]{\def\copyrighttext{\tiny{#1}}}
+
+\newcommand{\putcopyright}[1]{
+\ifratio{169}{
+	\putat{2}{-251}{{\color{#1}\copyrighttext}}
+}{
+	\putat{2}{-269}{{\color{#1}\copyrighttext}}	
+}}
+\newcommand{\defaulttemplate}{\putcopyright{black}}
+
+\newcommand{\nocopyright}{
+	\renewcommand{\defaulttemplate}{}
+	\setcopyright{}
+}
+
+
+\setbeamertemplate{background canvas}{ \defaulttemplate  }
 
 % New commands
 \newcolumntype{d}{D{.}{.}{-1}}
@@ -56,6 +76,7 @@
 
 % Set some beamer options
 \usetheme{Boadilla} 
+\setbeamercolor{button}{bg=EURGreen,fg=EURYellow}
 \setbeamertemplate{navigation symbols}{}
 \setbeamercolor{frametitle}{fg=EURGreen,bg=EURYellow}
 \setbeamercolor{block title}{use=structure,fg=EURGreen,bg=EURYellow}
@@ -148,7 +169,7 @@
 
 \newcommand{\fancybreakframe}[1]
 {%
-	\mode<beamer|handout>{
+	\mode<beamer|handout>{		
 		\ifratio{169}{
 			\usebackgroundtemplate{
 				\begin{tikzpicture}%pagedim 16 x 9
@@ -161,30 +182,79 @@
 						%					};
 					\node[color=white, scale=3, anchor=west,text width=3.5cm, align=flush left] at (0.5,-4) {#1};
 					%					\node at (14,-8.4) {\includegraphics[width=2cm]{erasmus_white.png}};
+					\node[color=white,anchor=west] at (0,-8.8) {\copyrighttext};
 				\end{tikzpicture}
 		}}
 		{
 			\usebackgroundtemplate{
 				\begin{tikzpicture}%pagedim 12.9 x 9.6
-					\fill[color=EURYellow] (0,0) -- (0,-8) -- (10,-5) -- (12, 0) -- cycle;
-					\fill[color=EURGreen] (0,-8) -- (10,-5) -- (12,0) -- (12.8, 0) -- (12.8,-9.6) -- (0,-9.6) -- cycle;
-					\node[align=left,scale=1.3,anchor=west] at (0.5,-.75) {
-						{\tiny \textbf{Erasmus}}\\[.075cm]
-						{\tiny \textbf{School of}}\\[.075cm]
-						{\tiny \textbf{Economics}}
-					};
-					\node[color=white, scale=1.2, anchor=west] at (0.5,-8.75) {\tiny \textbf{Erasmus University Rotterdam}};
-					\node at (11,-8.75) {\includegraphics[width=2cm]{erasmus_white.png}};
+					\fill[color=EURGreen] (0,0) -- (11,0) -- (12,-3) -- (10,-9.6) -- (0,-9.6) -- cycle;
+					\fill[color=EURYellow] (11,0) -- (12.9,0) -- (12.9,-9.6) -- (10,-9.6) -- (12, -3) -- cycle;
+					% \fill[color=EURYellow] (0,0) -- (0,-8) -- (10,-5) -- (12, 0) -- cycle;
+					% \fill[color=EURGreen] (0,-8) -- (10,-5) -- (12,0) -- (12.8, 0) -- (12.8,-9.6) -- (0,-9.6) -- cycle;
+					% \node[align=left,scale=1.3,anchor=west] at (0.5,-.75) {
+					% 	{\tiny \textbf{Erasmus}}\\[.075cm]
+					% 	{\tiny \textbf{School of}}\\[.075cm]
+					% 	{\tiny \textbf{Economics}}
+					% };
+					\node[color=white, scale=3, anchor=west,text width=3.5cm, align=flush left] at (0.5,-3) {#1};
+					% \node[color=white, scale=1.2, anchor=west] at (0.5,-8.75) {\tiny \textbf{Erasmus University Rotterdam}};
+					% \node at (11,-8.75) {\includegraphics[width=2cm]{erasmus_white.png}};
+					\node[color=white,anchor=west] at (0,-9.4) {\copyrighttext};
+				\end{tikzpicture}
+			}
+		}
+	}
+	\begin{frame}[plain,t]	
+	\end{frame}
+	\usebackgroundtemplate{\defaulttemplate}
+	\addtocounter{framenumber}{-1}
+}
+
+\newcommand{\subfancybreakframe}[2]
+{%
+	\mode<beamer|handout>{
+		\ifratio{169}{
+			\usebackgroundtemplate{
+				\begin{tikzpicture}%pagedim 16 x 9
+					\fill[color=EURGreen] (0,0) -- (12,0) -- (13,-3) -- (11,-9) -- (0,-9) -- cycle;
+					\fill[color=EURYellow] (12,0) -- (16,0) -- (16,-9) -- (11,-9) -- (13, -3) -- cycle;
+					%					\node[align=left,scale=1.3,anchor=west] at (0.5,-.75) {
+						%						{\tiny \textbf{Erasmus}}\\[.075cm]
+						%						{\tiny \textbf{School of}}\\[.075cm]
+						%						{\tiny \textbf{Economics}}
+						%					};
+					\node[color=white, font=\Huge, anchor=north west,text width=12cm, align=flush left] (main) at (0.5,-3) {#1};
+					\node[below left = 0.5cm and -1cm of main, color=white, font=\huge, anchor=north west,text width=10cm, align=flush left] (sub) {#2};
+					%					\node at (14,-8.4) {\includegraphics[width=2cm]{erasmus_white.png}};
+					\node[below left= -0.25cm and -0.5cm of main] (mainanchor) {};
+					\draw[color=white] (mainanchor) |- (sub.west);
+				\end{tikzpicture}
+		}}
+		{
+			\usebackgroundtemplate{
+				\begin{tikzpicture}%pagedim 12.9 x 9.6
+					\fill[color=EURGreen] (0,0) -- (11,0) -- (12,-3) -- (10,-9) -- (0,-9) -- cycle;
+					\fill[color=EURYellow] (11,0) -- (12.9,0) -- (12.9,-9) -- (10,-9) -- (12, -3) -- cycle;
+					% \fill[color=EURYellow] (0,0) -- (0,-8) -- (10,-5) -- (12, 0) -- cycle;
+					% \fill[color=EURGreen] (0,-8) -- (10,-5) -- (12,0) -- (12.8, 0) -- (12.8,-9.6) -- (0,-9.6) -- cycle;
+					% \node[align=left,scale=1.3,anchor=west] at (0.5,-.75) {
+					% 	{\tiny \textbf{Erasmus}}\\[.075cm]
+					% 	{\tiny \textbf{School of}}\\[.075cm]
+					% 	{\tiny \textbf{Economics}}
+					% };
+					\node[color=white, font=\Huge, anchor=north west,text width=10cm, align=flush left] (main) at (0.5,-3) {#1};
+					\node[color=white, font=\huge, anchor=north west,text width=10cm, align=flush left] (sub) at (1.5,-4) {#2};
+					\draw[color=white] (0.75,-4) |- (sub.west);
 				\end{tikzpicture}
 			}
 		}
 	}
 	\begin{frame}[plain,t]
 	\end{frame}
-	\usebackgroundtemplate{}
+	\usebackgroundtemplate{\defaulttemplate}
 	\addtocounter{framenumber}{-1}
 }
-
 % New environment
 \newenvironment{wideitemize}{\itemize\addtolength{\itemsep}{15pt}}{\enditemize}
 \newcommand{\noyellowtitle}{\setbeamercolor{frametitle}{fg=black,bg=}}
@@ -208,7 +278,7 @@
 		}
 	}%
 	{%
-		\putat{318}{2}{  
+		\putat{318}{4}{  
 			Slide \insertframenumber{} of \inserttotalframenumber
 		}
 	}%
@@ -227,21 +297,21 @@
 }
 }%
 {%
-\putat{318}{2}{  
+\putat{318}{4}{  
 Slide \insertframenumber{} of \inserttotalframenumber
 }
 }%
 }
 }
 
-\newcommand{\addframenum}{
-	\mode<beamer>{\setbeamertemplate{footline}{\leavevmode%
-			\putat{318}{2}{  
-				\insertframenumber{} / \inserttotalframenumber
-			}
-		}
-	}
-}
+% \newcommand{\addframenum}{
+% 	\mode<beamer>{\setbeamertemplate{footline}{\leavevmode%
+% 			\putat{318}{2}{  
+% 				\insertframenumber{} / \inserttotalframenumber
+% 			}
+% 		}
+% 	}
+% }
 
 % Underlining and highlighting
 \makeatletter
@@ -286,6 +356,7 @@ Slide \insertframenumber{} of \inserttotalframenumber
 			};
 	\node[color=white, scale=1.2, anchor=west] at (0.5,-8.5) {\tiny \textbf{Erasmus University Rotterdam}};
 	\node at (14,-8.4) {\includegraphics[width=2cm]{erasmus_white.png}};
+	\node[color=white,anchor=west] at (0,-8.8) {\copyrighttext};	
 \end{tikzpicture}
 }}
 {
@@ -300,7 +371,8 @@ Slide \insertframenumber{} of \inserttotalframenumber
 	};
 	\node[color=white, scale=1.2, anchor=west] at (0.5,-8.75) {\tiny \textbf{Erasmus University Rotterdam}};
 	\node at (11,-8.75) {\includegraphics[width=2cm]{erasmus_white.png}};
-	\end{tikzpicture}
+	\node[color=white,anchor=west] at (0,-9.4) {\copyrighttext};	
+\end{tikzpicture}
 }
 }
 }
@@ -323,7 +395,7 @@ Slide \insertframenumber{} of \inserttotalframenumber
 \large \insertdate
 \end{minipage}%
 \end{frame}
-\usebackgroundtemplate{}
+\usebackgroundtemplate{\defaulttemplate}
 }
 
 \newcommand{\titlepagePicture}[1]
@@ -343,7 +415,8 @@ Slide \insertframenumber{} of \inserttotalframenumber
 				};
 				\node[color=white, scale=1.2, anchor=west] at (0.5,-8.5) {\tiny \textbf{Erasmus University Rotterdam}};
 				\node at (14,-8.4) {\includegraphics[width=2cm]{erasmus_white.png}};			
-				\end{tikzpicture}
+				\node[color=white,anchor=west] at (0,-8.8) {\copyrighttext};	
+			\end{tikzpicture}
 		}}
 		{
 			\usebackgroundtemplate{
@@ -358,7 +431,8 @@ Slide \insertframenumber{} of \inserttotalframenumber
 				};
 				\node[color=white, scale=1.2, anchor=west] at (0.5,-8.75) {\tiny \textbf{Erasmus University Rotterdam}};
 				\node at (11,-8.75) {\includegraphics[width=2cm]{erasmus_white.png}};
-				\end{tikzpicture}
+				\node[color=white,anchor=west] at (0,-9.4) {\copyrighttext};
+			\end{tikzpicture}
 			}
 		}
 	}
@@ -383,7 +457,7 @@ Slide \insertframenumber{} of \inserttotalframenumber
 			\large \color{white}{\insertdate}
 		\end{minipage}%
 	\end{frame}
-	\usebackgroundtemplate{}
+	\usebackgroundtemplate{\defaulttemplate}
 }
 
 \newcommand{\titlepagePictureWithBorder}[1]
@@ -403,7 +477,8 @@ Slide \insertframenumber{} of \inserttotalframenumber
 				};
 				\node[color=black, scale=1.2, anchor=west] at (0.5,-8.5) {\tiny \textbf{Erasmus University Rotterdam}};
 				\node at (14,-8.4) {\includegraphics[width=2cm]{erasmus_crop.png}};			
-				\end{tikzpicture}
+				\node[color=black,anchor=west] at (0,-8.8) {\copyrighttext};	
+			\end{tikzpicture}
 		}}
 		{
 			\usebackgroundtemplate{
@@ -418,7 +493,8 @@ Slide \insertframenumber{} of \inserttotalframenumber
 				};
 				\node[color=white, scale=1.2, anchor=west] at (0.5,-8.75) {\tiny \textbf{Erasmus University Rotterdam}};
 				\node at (11,-8.75) {\includegraphics[width=2cm]{erasmus_white.png}};
-				\end{tikzpicture}
+				\node[color=black,anchor=west] at (0,-9.4) {\copyrighttext};	
+			\end{tikzpicture}
 			}
 		}
 	}
